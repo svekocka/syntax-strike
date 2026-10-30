@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syntax Strike — Master Coding Symbols</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'Fira Code', monospace; }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(147, 51, 234, 0.6); }
+    }
+    .glow-box { animation: pulse-glow 3s infinite; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- NAVIGATION -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="showView('home')">
+        <span class="text-2xl">⚡</span>
+        <span class="text-xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-violet-500 font-mono">
+          SYNTAX STRIKE
+        </span>
+      </div>
+      <nav class="flex gap-2 sm:gap-4 text-xs sm:text-sm font-semibold">
+        <button onclick="startSolo()" class="px-3 py-1.5 rounded-lg bg-cyan-600/20 text-cyan-400 hover:bg-cyan-600/30 transition">Solo Run</button>
+        <button onclick="startDuel()" class="px-3 py-1.5 rounded-lg bg-pink-600/20 text-pink-400 hover:bg-pink-600/30 transition">1v1 Duel</button>
+        <button onclick="showView('reference')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition">Cheat Sheet</button>
+        <button onclick="showView('platforms')" class="px-3 py-1.5 rounded-lg bg-violet-600/20 text-violet-300 hover:bg-violet-600/30 transition">Level Up 🚀</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 flex flex-col justify-center items-center">
+
+    <!-- VIEW: HOME / MENU -->
+    <section id="view-home" class="w-full max-w-3xl text-center py-8">
+      <div class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/10 text-violet-400 border border-violet-500/20 mb-4">
+        Stop saying "that squiggly thing" or "the triangle line"
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4">
+        Speak Code Like a <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500">Native Dev</span>.
+      </h1>
+      <p class="text-slate-400 text-sm sm:text-lg mb-8 max-w-xl mx-auto">
+        Train your reflexes on brackets, bangs, pipes, and colons. Practice solo, challenge a classmate in 1v1 battle, and pair with real platforms to multiply your progress.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 transition cursor-pointer text-left group" onclick="startSolo()">
+          <div class="text-3xl mb-2">🎯</div>
+          <h2 class="text-xl font-bold text-white group-hover:text-cyan-400 flex items-center justify-between">
+            Solo Sprint <span>→</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-2">60-second speed run. Match symbols to their exact technical names and build streaks.</p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-pink-500/50 transition cursor-pointer text-left group" onclick="startDuel()">
+          <div class="text-3xl mb-2">⚔️</div>
+          <h2 class="text-xl font-bold text-white group-hover:text-pink-400 flex items-center justify-between">
+            1v1 Versus Duel <span>→</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-2">Local 2-player split screen. First to 7 correct answers claims syntax dominance.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: SOLO MODE -->
+    <section id="view-solo" class="w-full max-w-lg hidden text-center">
+      <div class="flex justify-between items-center mb-4 text-xs font-mono text-slate-400">
+        <div>TIME: <span id="solo-timer" class="text-cyan-400 font-bold text-lg">60</span>s</div>
+        <div>SCORE: <span id="solo-score" class="text-white font-bold text-lg">0</span></div>
+        <div>STREAK: <span id="solo-streak" class="text-yellow-400 font-bold text-lg">0</span>🔥</div>
+      </div>
+
+      <div class="bg-slate-900 border-2 border-cyan-500/40 rounded-2xl p-8 mb-6 glow-box">
+        <span class="text-xs text-slate-500 uppercase tracking-widest font-mono">Identify this Symbol</span>
+        <div id="solo-symbol" class="text-7xl font-mono font-bold text-cyan-300 my-6 min-h-[5rem] flex items-center justify-center">
+          ;
+        </div>
+        <p id="solo-feedback" class="h-6 text-sm font-semibold text-transparent select-none">-</p>
+      </div>
+
+      <div id="solo-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Buttons generated dynamically -->
+      </div>
+    </section>
+
+    <!-- VIEW: 1v1 DUEL MODE -->
+    <section id="view-duel" class="w-full max-w-4xl hidden">
+      <div class="text-center mb-4">
+        <h2 class="text-lg font-bold text-slate-300">1v1 FACE-OFF — FIRST TO 7 POINTS WINS</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- PLAYER 1 -->
+        <div id="p1-card" class="bg-slate-900 border-2 border-cyan-500/40 rounded-2xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between text-xs font-mono mb-2">
+              <span class="text-cyan-400 font-bold">PLAYER 1 (Left / Keys: Q, W, A, S)</span>
+              <span class="text-cyan-400 font-bold text-lg" id="p1-score">0 / 7</span>
+            </div>
+            <div id="p1-symbol" class="text-6xl font-mono font-bold text-cyan-300 text-center py-6">?</div>
+          </div>
+          <div id="p1-options" class="grid grid-cols-2 gap-2 mt-4"></div>
+        </div>
+
+        <!-- PLAYER 2 -->
+        <div id="p2-card" class="bg-slate-900 border-2 border-pink-500/40 rounded-2xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between text-xs font-mono mb-2">
+              <span class="text-pink-400 font-bold">PLAYER 2 (Right / Keys: U, I, J, K)</span>
+              <span class="text-pink-400 font-bold text-lg" id="p2-score">0 / 7</span>
+            </div>
+            <div id="p2-symbol" class="text-6xl font-mono font-bold text-pink-300 text-center py-6">?</div>
+          </div>
+          <div id="p2-options" class="grid grid-cols-2 gap-2 mt-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: CHEAT SHEET -->
+    <section id="view-reference" class="w-full max-w-3xl hidden">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Full Symbol Reference</h2>
+          <p class="text-xs text-slate-400">All 24 essential syntax symbols with aliases and usage</p>
+        </div>
+        <input id="search-box" oninput="filterTable()" placeholder="Search symbol or name..." class="bg-slate-900 border border-slate-700 text-xs px-3 py-2 rounded-lg focus:outline-none focus:border-cyan-400 w-48 text-white">
+      </div>
+      <div class="overflow-x-auto bg-slate-900 border border-slate-800 rounded-xl">
+        <table class="w-full text-left text-sm" id="ref-table">
+          <thead class="bg-slate-800/60 text-slate-400 font-mono text-xs uppercase">
+            <tr>
+              <th class="p-3">Symbol</th>
+              <th class="p-3">Official / Common Names</th>
+              <th class="p-3">Where You See It</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 text-slate-300" id="table-body">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VIEW: LEARNING PLATFORMS (LEARNING MULTIPLIER) -->
+    <section id="view-platforms" class="w-full max-w-4xl hidden">
+      <div class="text-center mb-8">
+        <span class="text-xs uppercase font-mono text-cyan-400 tracking-wider">Learning Multiplier Architecture</span>
+        <h2 class="text-3xl font-extrabold text-white mt-1">Where to Put This Vocabulary to Work</h2>
+        <p class="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+          Memorizing terms in a game builds intuition; applying them immediately creates permanent fluency. Use this 3-tier roadmap:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Stage 1 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-mono text-cyan-400 font-semibold mb-1">STAGE 1: MOTOR MEMORY</div>
+            <h3 class="text-lg font-bold text-white mb-2">Code Typing & Muscle Reflex</h3>
+            <p class="text-xs text-slate-400 mb-4">
+              Your fingers must hit <code class="text-cyan-300">; { } [ ] =></code> without looking at the keyboard.
+            </p>
+            <ul class="text-xs space-y-2 text-slate-300 mb-4">
+              <li><strong class="text-white">• SpeedCoder.net:</strong> Type real source code from open-source repos.</li>
+              <li><strong class="text-white">• Typing.io:</strong> Dedicated symbol typing practice for developers.</li>
+            </ul>
+          </div>
+          <a href="https://typing.io" target="_blank" class="block text-center text-xs py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg font-semibold">Visit Typing.io ↗</a>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-mono text-violet-400 font-semibold mb-1">STAGE 2: SYNTAX IN ACTION</div>
+            <h3 class="text-lg font-bold text-white mb-2">Guided Interactive Learning</h3>
+            <p class="text-xs text-slate-400 mb-4">
+              Learn which symbols belong to control flow, data structures, and operators.
+            </p>
+            <ul class="text-xs space-y-2 text-slate-300 mb-4">
+              <li><strong class="text-white">• freeCodeCamp:</strong> 100% free curriculum with built-in editors.</li>
+              <li><strong class="text-white">• Exercism.org:</strong> Free human mentorship with track-specific idioms.</li>
+            </ul>
+          </div>
+          <a href="https://exercism.org" target="_blank" class="block text-center text-xs py-2 bg-slate-800 hover:bg-slate-700 text-violet-400 rounded-lg font-semibold">Visit Exercism ↗</a>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-mono text-pink-400 font-semibold mb-1">STAGE 3: LIVE CODING & AUDIO</div>
+            <h3 class="text-lg font-bold text-white mb-2">Verbalize in Code Reviews</h3>
+            <p class="text-xs text-slate-400 mb-4">
+              Speak the vocabulary aloud during pair programming and algorithm drills.
+            </p>
+            <ul class="text-xs space-y-2 text-slate-300 mb-4">
+              <li><strong class="text-white">• Pramp / Interviewing.io:</strong> Practice mock tech interviews verbally.</li>
+              <li><strong class="text-white">• LeetCode:</strong> Read problems aloud: "array bracket open, index, bracket close".</li>
+            </ul>
+          </div>
+          <a href="https://www.freecodecamp.org" target="_blank" class="block text-center text-xs py-2 bg-slate-800 hover:bg-slate-700 text-pink-400 rounded-lg font-semibold">Visit freeCodeCamp ↗</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- AUDIO SYNTH (Zero External Files) -->
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq, type = 'sine', duration = 0.1) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+    const soundCorrect = () => { playBeep(587.33, 'triangle', 0.1); setTimeout(() => playBeep(880, 'triangle', 0.15), 80); };
+    const soundWrong = () => { playBeep(220, 'sawtooth', 0.25); };
+    const soundWin = () => { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => playBeep(f, 'sine', 0.2), i * 100)); };
+
+    // COMPLETE DATASET ACCORDING TO USER SPECIFICATIONS
+    const SYMBOLS = [
+      { sym: ';', name: 'semicolon', context: 'Statement terminator in JS, C++, Java' },
+      { sym: ',', name: 'comma', context: 'Separates list items, arguments, & object keys' },
+      { sym: ':', name: 'colon', context: 'Key-value pairs in JSON, type annotations in TS' },
+      { sym: '!', name: 'exclamation mark / bang', context: 'Logical NOT, non-null assertion' },
+      { sym: '{ }', name: 'curly brackets / braces', context: 'Code blocks, object literals, dictionary' },
+      { sym: '[ ]', name: 'square brackets', context: 'Arrays, index access, list indexing' },
+      { sym: '( )', name: 'parentheses / round brackets', context: 'Function calls, grouping math operations' },
+      { sym: '|', name: 'pipe / vertical bar', context: 'Bitwise OR, shell pipes, union types' },
+      { sym: '||', name: 'double pipe', context: 'Logical OR operator' },
+      { sym: '&', name: 'ampersand', context: 'Bitwise AND, pointer reference in C/C++' },
+      { sym: '&&', name: 'double ampersand', context: 'Logical AND operator' },
+      { sym: '/', name: 'slash / forward slash', context: 'Division, path separators, comments (//)' },
+      { sym: '\\', name: 'backslash', context: 'Escape character (\\n, \\t) in strings' },
+      { sym: '*', name: 'asterisk / star', context: 'Multiplication, glob wildcards, C pointers' },
+      { sym: '< / >', name: 'less than / greater than', context: 'Comparisons, HTML tags, generic types' },
+      { sym: '_', name: 'underscore', context: 'snake_case identifiers, unused parameter placeholder' },
+      { sym: '-', name: 'hyphen / dash / minus', context: 'Subtraction, kebab-case, CLI options (-v)' },
+      { sym: '\' / "', name: 'single quote / double quote', context: 'String literals in almost all languages' },
+      { sym: '`', name: 'backtick / grave accent', context: 'Template literals, multiline strings, markdown code' },
+      { sym: '@', name: 'at sign / at', context: 'Decorators (Python, TS), annotations (Java)' },
+      { sym: '#', name: 'hash / pound / number sign', context: 'Python comments, private class fields (#id), IDs' },
+      { sym: '~', name: 'tilde', context: 'Bitwise NOT, home directory path (~/)' },
+      { sym: '^', name: 'caret', context: 'Bitwise XOR, regex start-of-line, version lock (^1.0)' },
+      { sym: '$', name: 'dollar sign', context: 'Variables (PHP, bash), regex end-of-line, jQuery' }
+    ];
+
+    // ROUTING / VIEW CONTROLLER
+    function showView(viewId) {
+      ['home', 'solo', 'duel', 'reference', 'platforms'].forEach(id => {
+        document.getElementById(`view-${id}`).classList.add('hidden');
+      });
+      document.getElementById(`view-${viewId}`).classList.remove('hidden');
+      if (soloTimerId) clearInterval(soloTimerId);
+    }
+
+    // --- SOLO MODE LOGIC ---
+    let soloScore = 0, soloStreak = 0, soloTimeLeft = 60, soloTimerId = null, currentSoloItem = null;
+
+    function startSolo() {
+      showView('solo');
+      soloScore = 0;
+      soloStreak = 0;
+      soloTimeLeft = 60;
+      document.getElementById('solo-score').innerText = soloScore;
+      document.getElementById('solo-streak').innerText = soloStreak;
+      document.getElementById('solo-timer').innerText = soloTimeLeft;
+      nextSoloQuestion();
+
+      soloTimerId = setInterval(() => {
+        soloTimeLeft--;
+        document.getElementById('solo-timer').innerText = soloTimeLeft;
+        if (soloTimeLeft <= 0) {
+          clearInterval(soloTimerId);
+          soundWin();
+          alert(`Game Over! Final Score: ${soloScore} | Longest Streak: ${soloStreak}`);
+          showView('home');
+        }
+      }, 1000);
+    }
+
+    function getRandomItem(exclude = null) {
+      let filtered = exclude ? SYMBOLS.filter(s => s.name !== exclude.name) : SYMBOLS;
+      return filtered[Math.floor(Math.random() * filtered.length)];
+    }
+
+    function nextSoloQuestion() {
+      currentSoloItem = getRandomItem();
+      document.getElementById('solo-symbol').innerText = currentSoloItem.sym;
+
+      const choices = [currentSoloItem.name];
+      while (choices.length < 4) {
+        let r = getRandomItem().name;
+        if (!choices.includes(r)) choices.push(r);
+      }
+      choices.sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('solo-options');
+      container.innerHTML = '';
+      choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = "p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 font-medium text-xs sm:text-sm border border-slate-700 transition active:scale-95 text-left";
+        btn.innerText = choice;
+        btn.onclick = () => checkSoloAnswer(choice, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function checkSoloAnswer(selected, button) {
+      const feedback = document.getElementById('solo-feedback');
+      if (selected === currentSoloItem.name) {
+        soundCorrect();
+        soloScore += 10 + soloStreak * 2;
+        soloStreak++;
+        feedback.innerText = "CORRECT! +Points";
+        feedback.className = "h-6 text-xs font-bold text-emerald-400";
+      } else {
+        soundWrong();
+        soloStreak = 0;
+        feedback.innerText = `WRONG! That was "${currentSoloItem.name}"`;
+        feedback.className = "h-6 text-xs font-bold text-rose-400";
+      }
+      document.getElementById('solo-score').innerText = soloScore;
+      document.getElementById('solo-streak').innerText = soloStreak;
+      nextSoloQuestion();
+    }
+
+    // --- 1V1 DUEL LOGIC ---
+    let p1Score = 0, p2Score = 0;
+    let p1Current = null, p2Current = null;
+    let p1Choices = [], p2Choices = [];
+
+    function startDuel() {
+      showView('duel');
+      p1Score = 0;
+      p2Score = 0;
+      updateDuelUI();
+      nextP1();
+      nextP2();
+    }
+
+    function updateDuelUI() {
+      document.getElementById('p1-score').innerText = `${p1Score} / 7`;
+      document.getElementById('p2-score').innerText = `${p2Score} / 7`;
+      if (p1Score >= 7) { soundWin(); alert('🎉 PLAYER 1 WINS THE SYNTAX DUEL!'); showView('home'); }
+      if (p2Score >= 7) { soundWin(); alert('🎉 PLAYER 2 WINS THE SYNTAX DUEL!'); showView('home'); }
+    }
+
+    function nextP1() {
+      p1Current = getRandomItem();
+      document.getElementById('p1-symbol').innerText = p1Current.sym;
+      p1Choices = [p1Current.name];
+      while (p1Choices.length < 4) {
+        let r = getRandomItem().name;
+        if (!p1Choices.includes(r)) p1Choices.push(r);
+      }
+      p1Choices.sort(() => Math.random() - 0.5);
+
+      const keys = ['Q', 'W', 'A', 'S'];
+      const c = document.getElementById('p1-options');
+      c.innerHTML = '';
+      p1Choices.forEach((ch, idx) => {
+        const b = document.createElement('button');
+        b.className = "p-2 bg-slate-800 hover:bg-slate-700 text-[11px] rounded border border-cyan-800 text-left text-slate-200";
+        b.innerHTML = `<span class="font-mono text-cyan-400 font-bold">[${keys[idx]}]</span> ${ch}`;
+        b.onclick = () => answerP1(idx);
+        c.appendChild(b);
+      });
+    }
+
+    function nextP2() {
+      p2Current = getRandomItem();
+      document.getElementById('p2-symbol').innerText = p2Current.sym;
+      p2Choices = [p2Current.name];
+      while (p2Choices.length < 4) {
+        let r = getRandomItem().name;
+        if (!p2Choices.includes(r)) p2Choices.push(r);
+      }
+      p2Choices.sort(() => Math.random() - 0.5);
+
+      const keys = ['U', 'I', 'J', 'K'];
+      const c = document.getElementById('p2-options');
+      c.innerHTML = '';
+      p2Choices.forEach((ch, idx) => {
+        const b = document.createElement('button');
+        b.className = "p-2 bg-slate-800 hover:bg-slate-700 text-[11px] rounded border border-pink-800 text-left text-slate-200";
+        b.innerHTML = `<span class="font-mono text-pink-400 font-bold">[${keys[idx]}]</span> ${ch}`;
+        b.onclick = () => answerP2(idx);
+        c.appendChild(b);
+      });
+    }
+
+    function answerP1(index) {
+      if (p1Choices[index] === p1Current.name) {
+        soundCorrect();
+        p1Score++;
+      } else {
+        soundWrong();
+        p1Score = Math.max(0, p1Score - 1);
+      }
+      updateDuelUI();
+      if (p1Score < 7) nextP1();
+    }
+
+    function answerP2(index) {
+      if (p2Choices[index] === p2Current.name) {
+        soundCorrect();
+        p2Score++;
+      } else {
+        soundWrong();
+        p2Score = Math.max(0, p2Score - 1);
+      }
+      updateDuelUI();
+      if (p2Score < 7) nextP2();
+    }
+
+    // Keyboard controls for 1v1 split battle
+    window.addEventListener('keydown', (e) => {
+      if (document.getElementById('view-duel').classList.contains('hidden')) return;
+      const key = e.key.toLowerCase();
+      // P1: Q, W, A, S
+      if (key === 'q') answerP1(0);
+      if (key === 'w') answerP1(1);
+      if (key === 'a') answerP1(2);
+      if (key === 's') answerP1(3);
+      // P2: U, I, J, K
+      if (key === 'u') answerP2(0);
+      if (key === 'i') answerP2(1);
+      if (key === 'j') answerP2(2);
+      if (key === 'k') answerP2(3);
+    });
+
+    // --- REFERENCE TABLE & FILTER ---
+    function renderTable(items = SYMBOLS) {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/40 transition";
+        tr.innerHTML = `
+          <td class="p-3 font-mono text-cyan-400 font-bold text-lg">${item.sym}</td>
+          <td class="p-3 font-semibold text-white">${item.name}</td>
+          <td class="p-3 text-slate-400 text-xs">${item.context}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterTable() {
+      const q = document.getElementById('search-box').value.toLowerCase();
+      const filtered = SYMBOLS.filter(s => s.sym.toLowerCase().includes(q) || s.name.toLowerCase().includes(q) || s.context.toLowerCase().includes(q));
+      renderTable(filtered);
+    }
+
+    // Init cheat sheet
+    renderTable();
+  </script>
+</body>
+</html>
