@@ -70,16 +70,15 @@
       </div>
     </section>
 
-    <!-- VIEW: SOLO MODE (ZVĚTŠENÝ VÝUKOVÝ BLOK) -->
+    <!-- VIEW: SOLO MODE -->
     <section id="view-solo" class="w-full max-w-3xl hidden text-center py-4">
-      <!-- Status bar -->
       <div class="flex justify-between items-center mb-6 px-4 text-sm sm:text-base font-mono text-slate-400 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
         <div>TIME: <span id="solo-timer" class="text-cyan-400 font-bold text-2xl">60</span>s</div>
         <div>SCORE: <span id="solo-score" class="text-white font-bold text-2xl">0</span></div>
         <div>STREAK: <span id="solo-streak" class="text-yellow-400 font-bold text-2xl">0</span>🔥</div>
       </div>
 
-      <!-- HLAVNÍ KARTA SE ZNAKEM (MASIVNÍ OBDÉLNÍK A PÍSMO) -->
+      <!-- Main card for symbol -->
       <div class="bg-slate-900 border-2 border-cyan-500/50 rounded-3xl p-8 sm:p-14 mb-8 glow-box">
         <span class="text-sm sm:text-base text-cyan-400/80 font-bold uppercase tracking-widest font-mono">
           What is the official name of this symbol?
@@ -90,13 +89,13 @@
         <p id="solo-feedback" class="h-8 text-base sm:text-lg font-bold text-transparent select-none">-</p>
       </div>
 
-      <!-- VĚTŠÍ TLAČÍTKA PRO ODPOVĚDI -->
+      <!-- Answer options -->
       <div id="solo-options" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Vkládáno dynamicky větším písmem -->
+        <!-- Dynamically injected -->
       </div>
     </section>
 
-    <!-- VIEW: 1v1 DUEL MODE (ROZŠÍŘENÉ VELKÉ PANELY) -->
+    <!-- VIEW: 1v1 DUEL MODE -->
     <section id="view-duel" class="w-full max-w-5xl hidden py-4">
       <div class="text-center mb-6">
         <h2 class="text-xl sm:text-2xl font-extrabold text-slate-200 tracking-wide">⚔️ 1v1 FACE-OFF — FIRST TO 7 POINTS WINS</h2>
@@ -148,7 +147,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800 text-slate-300" id="table-body">
-            <!-- Injected via JS -->
+            <!-- Dynamically injected -->
           </tbody>
         </table>
       </div>
@@ -292,7 +291,6 @@
       return filtered[Math.floor(Math.random() * filtered.length)];
     }
 
-    // ZDE JSOU VYTVÁŘENA ZNAČNĚ VĚTŠÍ TLAČÍTKA S VELKÝM PÍSMEM
     function nextSoloQuestion() {
       currentSoloItem = getRandomItem();
       document.getElementById('solo-symbol').innerText = currentSoloItem.sym;
@@ -308,8 +306,7 @@
       container.innerHTML = '';
       choices.forEach(choice => {
         const btn = document.createElement('button');
-        // Velký padding (p-5 sm:p-6) a velké písmo (text-base sm:text-xl)
-        btn.className = "p-5 sm:p-6 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-100 font-semibold text-base sm:text-xl border-2 border-slate-800 hover:border-cyan-400 transition active:scale-95 text-center flex items-center justify-center min-h-[4.5rem] shadow-md hover:shadow-cyan-500/20";
+        btn.className = "p-5 sm:p-6 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-100 font-semibold text-base sm:text-xl border-2 border-slate-800 hover:border-cyan-400 transition active:scale-95 text-center flex items-center justify-center min-h-[4.5rem] leading-snug break-words shadow-md hover:shadow-cyan-500/20";
         btn.innerText = choice;
         btn.onclick = () => checkSoloAnswer(choice, btn);
         container.appendChild(btn);
@@ -370,8 +367,8 @@
       c.innerHTML = '';
       p1Choices.forEach((ch, idx) => {
         const b = document.createElement('button');
-        b.className = "p-4 bg-slate-800 hover:bg-slate-700 text-sm sm:text-base font-semibold rounded-2xl border-2 border-cyan-800/80 text-left text-slate-100 flex items-center gap-2 transition active:scale-95";
-        b.innerHTML = `<span class="font-mono text-cyan-400 font-bold bg-cyan-950/80 px-2 py-1 rounded-lg border border-cyan-700/50">${keys[idx]}</span> <span class="truncate">${ch}</span>`;
+        b.className = "p-3 sm:p-4 bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-semibold rounded-2xl border-2 border-cyan-800/80 text-left text-slate-100 flex items-center gap-2.5 transition active:scale-95 min-h-[4.25rem]";
+        b.innerHTML = `<span class="font-mono text-cyan-400 font-bold bg-cyan-950/80 px-2.5 py-1 rounded-lg border border-cyan-700/50 shrink-0 text-xs">${keys[idx]}</span> <span class="leading-snug break-words flex-1">${ch}</span>`;
         b.onclick = () => answerP1(idx);
         c.appendChild(b);
       });
@@ -392,8 +389,8 @@
       c.innerHTML = '';
       p2Choices.forEach((ch, idx) => {
         const b = document.createElement('button');
-        b.className = "p-4 bg-slate-800 hover:bg-slate-700 text-sm sm:text-base font-semibold rounded-2xl border-2 border-pink-800/80 text-left text-slate-100 flex items-center gap-2 transition active:scale-95";
-        b.innerHTML = `<span class="font-mono text-pink-400 font-bold bg-pink-950/80 px-2 py-1 rounded-lg border border-pink-700/50">${keys[idx]}</span> <span class="truncate">${ch}</span>`;
+        b.className = "p-3 sm:p-4 bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-semibold rounded-2xl border-2 border-pink-800/80 text-left text-slate-100 flex items-center gap-2.5 transition active:scale-95 min-h-[4.25rem]";
+        b.innerHTML = `<span class="font-mono text-pink-400 font-bold bg-pink-950/80 px-2.5 py-1 rounded-lg border border-pink-700/50 shrink-0 text-xs">${keys[idx]}</span> <span class="leading-snug break-words flex-1">${ch}</span>`;
         b.onclick = () => answerP2(idx);
         c.appendChild(b);
       });
